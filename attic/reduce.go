@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-package filter
+package attic
 
 import (
 	"reflect"
@@ -15,6 +15,7 @@ import (
 // If the slice is empty, Reduce returns zero; if it has only one element, it
 // returns that element. The return value must be type-asserted by the caller
 // back to the element type of the slice. Example:
+//
 //	func multiply(a, b int) int { return a*b }
 //	a := []int{1, 2, 3, 4, 5, 6, 7, 8, 9, 10}
 //	factorial := Reduce(a, multiply, 1).(int)

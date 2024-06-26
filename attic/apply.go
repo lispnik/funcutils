@@ -7,10 +7,9 @@
 //
 // The package is an experiment to see how easy it is to write such things
 // in Go. It is easy, but for loops are just as easy and more efficient.
-// 
-// You should not use this package.
 //
-package filter // import "robpike.io/filter"
+// You should not use this package.
+package attic // import "robpike.io/filter"
 
 import (
 	"reflect"
