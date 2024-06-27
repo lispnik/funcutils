@@ -2,8 +2,11 @@ package funcutils
 
 import (
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"slices"
 	"strings"
 	"testing"
+	"unicode"
 )
 
 func TestMapFunc(t *testing.T) {
@@ -37,5 +40,40 @@ func TestIndexFunc(t *testing.T) {
 		i, found := IndexFunc([]string{"asdf", "UIOP"}, f)
 		assert.Equal(t, 1, i)
 		assert.True(t, found)
+	})
+}
+
+func TestGroupByFunc(t *testing.T) {
+	t.Run("empty", func(t *testing.T) {
+		grouped := GroupByFunc([]string{}, Identity[string])
+		require.Empty(t, grouped)
+	})
+
+	t.Run("group by", func(t *testing.T) {
+		groupByFunc := func(s string) string {
+			if len(s) > 0 {
+				// the most retarded thing in Go, maybe
+				r := []rune(s)
+				return string(unicode.ToUpper(r[0]))
+			}
+			return ""
+		}
+
+		names := []string{"Alice", "Bob", "", "Brenda", "Charlie", "Christina", "", "Derek", "Eva", "Ethan", ""}
+		expected := map[string][]string{
+			"A": {"Alice"},
+			"B": {"Bob", "Brenda"},
+			"C": {"Charlie", "Christina"},
+			"D": {"Derek"},
+			"E": {"Ethan", "Eva"},
+			"":  {"", "", ""},
+		}
+		phonebook := GroupByFunc(names, groupByFunc)
+		for k, v := range phonebook {
+			w := slices.Clone(v)
+			slices.Sort(w)
+			require.Equal(t, expected[k], w)
+		}
+		require.Equal(t, len(expected), len(phonebook))
 	})
 }
